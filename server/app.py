@@ -40,7 +40,6 @@ app = create_app(
     max_concurrent_envs=8,
 )
 
-
 class DemoResetRequest(BaseModel):
     task_id: str | None = Field(default=None)
     seed: int | None = Field(default=None)

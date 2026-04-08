@@ -236,6 +236,81 @@ The custom UI includes:
 - a deterministic demo-agent autoplay mode
 - raw observation/state JSON for debugging
 
+## Using the Built-in Web UI
+
+Open the standard OpenEnv playground at `/web`.
+
+### Start an episode
+
+1. Click `Reset`.
+2. Use an empty reset payload to cycle to the next task:
+
+```json
+{}
+```
+
+Each reset without a task_id rotates through:
+
+- easy_static_route
+- medium_multimodal_route
+- hard_dynamic_peak_route
+  To open a specific task directly, reset with:
+
+  ```json
+  { "task_id": "easy_static_route" }
+  ```
+
+  or
+
+  ```json
+  { "task_id": "medium_multimodal_route" }
+  ```
+
+  or
+
+  ```json
+  { "task_id": "hard_dynamic_peak_route" }
+  ```
+
+  ### Take a step
+
+  Use only legal adjacent moves. The agent cannot jump directly to the final destination unless that destination is a legal next node.
+
+  Example move payload:
+
+  ```json
+  {
+    "action_type": "move",
+    "target_node_id": "civil_lines",
+    "mode": "walk"
+  }
+  ```
+
+  Example wait payload for the hard task:
+
+  ```json
+  {
+    "action_type": "wait",
+    "target_node_id": null,
+    "mode": null
+  }
+  ```
+
+  ### Interpreting reward and done
+  - Rewards are dense and are often negative during intermediate steps.
+  - Negative reward is expected because exposure and travel time both add cost.
+  - done stays false until:
+    - the destination is reached, or
+    - the task runs out of allowed steps.
+  - Illegal actions are penalized but do not instantly end the episode.
+
+  ### Helpful routes
+  - / or /demo: custom visual map UI
+  - /web: built-in OpenEnv playground
+  - /tasks: task definitions
+  - /baseline: baseline and oracle reference values
+  - /grader: grading formula and score references
+
 ## Run locally
 
 Start the API:
