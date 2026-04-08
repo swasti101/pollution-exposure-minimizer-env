@@ -2,9 +2,8 @@
 
 Optional environment variables:
     API_BASE_URL
+    API_KEY
     MODEL_NAME
-    HF_TOKEN
-    OPENAI_API_KEY          Alternate auth variable; falls back to HF_TOKEN
     ENV_BASE_URL            Use an already-running environment server
     LOCAL_IMAGE_NAME        Local Docker image name for from_docker_image()
     TASK_LIST               Comma-separated task ids to evaluate
@@ -28,9 +27,8 @@ from models import ActionOption, PollutionAction, PollutionObservation
 DEFAULT_OPENAI_BASE_URL = "https://api.openai.com/v1"
 DEFAULT_HF_BASE_URL = "https://router.huggingface.co/v1"
 API_BASE_URL = os.getenv("API_BASE_URL", DEFAULT_HF_BASE_URL).strip()
+API_KEY = os.getenv("API_KEY", "")
 MODEL_NAME = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-7B-Instruct:together").strip()
-HF_TOKEN = os.getenv("HF_TOKEN", "")
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 ENV_BASE_URL = os.getenv("ENV_BASE_URL", "").strip()
 LOCAL_IMAGE_NAME = (
     os.getenv("LOCAL_IMAGE_NAME", "").strip()
@@ -99,20 +97,7 @@ def require_env(name: str, value: Optional[str]) -> str:
 
 def resolve_api_config() -> tuple[str, str]:
     normalized_base_url = API_BASE_URL or DEFAULT_HF_BASE_URL
-    normalized_model_name = MODEL_NAME.lower()
-    api_key = HF_TOKEN or OPENAI_API_KEY or ""
-
-    if normalized_base_url == "auto":
-        if api_key and (
-            normalized_model_name.startswith("gpt-")
-            or normalized_model_name.startswith("o1")
-            or normalized_model_name.startswith("o3")
-            or normalized_model_name.startswith("o4")
-        ):
-            return DEFAULT_OPENAI_BASE_URL, api_key
-        return DEFAULT_HF_BASE_URL, api_key
-
-    return normalized_base_url, api_key
+    return normalized_base_url, API_KEY
 
 
 def log_start(task: str, env: str, model: str) -> None:
@@ -512,7 +497,7 @@ def run_task(client: OpenAI, env: PollutionExposureMinimizerEnv, task_id: str) -
 
 async def main() -> None:
     base_url, api_key = resolve_api_config()
-    client = OpenAI(base_url=base_url, api_key=api_key or "EMPTY")
+    client = OpenAI(base_url=base_url, api_key=api_key)
     task_started = False
     emit_final_end = False
     try:
