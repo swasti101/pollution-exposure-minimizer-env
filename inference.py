@@ -24,10 +24,6 @@ from openai import OpenAI
 from client import PollutionExposureMinimizerEnv
 from models import ActionOption, PollutionAction, PollutionObservation
 
-DEFAULT_OPENAI_BASE_URL = "https://api.openai.com/v1"
-DEFAULT_HF_BASE_URL = "https://router.huggingface.co/v1"
-API_BASE_URL = os.getenv("API_BASE_URL", DEFAULT_HF_BASE_URL).strip()
-API_KEY = os.getenv("API_KEY", "")
 MODEL_NAME = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-7B-Instruct:together").strip()
 ENV_BASE_URL = os.getenv("ENV_BASE_URL", "").strip()
 LOCAL_IMAGE_NAME = (
@@ -93,11 +89,6 @@ def require_env(name: str, value: Optional[str]) -> str:
     if value:
         return value
     raise RuntimeError(f"Missing required environment variable: {name}")
-
-
-def resolve_api_config() -> tuple[str, str]:
-    normalized_base_url = API_BASE_URL or DEFAULT_HF_BASE_URL
-    return normalized_base_url, API_KEY
 
 
 def log_start(task: str, env: str, model: str) -> None:
@@ -496,11 +487,19 @@ def run_task(client: OpenAI, env: PollutionExposureMinimizerEnv, task_id: str) -
 
 
 async def main() -> None:
-    base_url, api_key = resolve_api_config()
-    client = OpenAI(base_url=base_url, api_key=api_key)
     task_started = False
     emit_final_end = False
     try:
+        try:
+            base_url = os.environ["API_BASE_URL"].strip()
+            api_key = os.environ["API_KEY"]
+        except KeyError:
+            log_start(task="startup", env=BENCHMARK, model=MODEL_NAME)
+            emit_final_end = True
+            return
+
+        client = OpenAI(base_url=base_url, api_key=api_key)
+
         try:
             env_client = (
                 PollutionExposureMinimizerEnv(base_url=ENV_BASE_URL)
