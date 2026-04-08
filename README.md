@@ -319,6 +319,8 @@ Start the API:
 .\.venv\Scripts\python.exe -m uvicorn server.app:app --host 0.0.0.0 --port 8000 --reload
 ```
 
+Local development uses port `8000`.
+
 Inspect helper routes:
 
 ```powershell
@@ -335,16 +337,18 @@ Run inference:
 
 ## Docker
 
+The Docker image listens on port `7860`.
+
 Build:
 
 ```powershell
-docker build -t pollution-exposure-minimizer-environment -f server/Dockerfile .
+docker build -t pollution-exposure-minimizer-environment -f Dockerfile .
 ```
 
 Run:
 
 ```powershell
-docker run -p 8000:8000 pollution-exposure-minimizer-environment
+docker run -p 7860:7860 pollution-exposure-minimizer-environment
 ```
 
 ## OpenEnv validation
@@ -371,6 +375,8 @@ openenv push --repo-id <your-hf-username>/pollution-exposure-minimizer-environme
 ```text
 pollution-exposure-minimizer-env/
 ├── client.py
+├── Dockerfile
+├── .dockerignore
 ├── inference.py
 ├── models.py
 ├── openenv.yaml
@@ -388,6 +394,5 @@ pollution-exposure-minimizer-env/
     ├── grader.py
     ├── pollution_exposure_minimizer_environment.py
     ├── tasks.py
-    ├── Dockerfile
-    └── requirements.txt
+    └── __init__.py
 ```
