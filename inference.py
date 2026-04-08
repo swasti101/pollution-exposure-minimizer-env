@@ -499,6 +499,16 @@ async def main() -> None:
             return
 
         client = OpenAI(base_url=base_url, api_key=api_key)
+        try:
+            client.chat.completions.create(
+                model=MODEL_NAME,
+                messages=[{"role": "user", "content": "ping"}],
+                temperature=0.0,
+                max_tokens=1,
+                stream=False,
+            )
+        except Exception:
+            pass
 
         try:
             env_client = (
