@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openenv-pollution-exposure-minimizer-environment"
+version = "0.1.0"
+description = "OpenEnv benchmark for pollution-aware commuting on a Delhi-inspired city graph."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "openenv-core[core]>=0.2.3",
+    "openai>=1.40.0",
+    "python-dotenv>=1.0.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-cov>=4.0.0",
+]
+
+[project.scripts]
+server = "pollution_exposure_minimizer_environment.server.app:main"
+
+[tool.setuptools]
+include-package-data = true
+packages = [
+    "pollution_exposure_minimizer_environment",
+    "pollution_exposure_minimizer_environment.server",
+]
+package-dir = {"pollution_exposure_minimizer_environment" = ".", "pollution_exposure_minimizer_environment.server" = "server"}

@@ -1,0 +1,41 @@
+{
+  "city_name": "Delhi",
+  "nodes": [
+    {"node_id": "north_campus", "label": "North Campus", "zone_type": "residential", "x": 0.0, "y": 4.0, "base_aqi": 148, "traffic_sensitivity": 0.55},
+    {"node_id": "civil_lines", "label": "Civil Lines", "zone_type": "transit_hub", "x": 1.0, "y": 4.0, "base_aqi": 160, "traffic_sensitivity": 0.75},
+    {"node_id": "karol_bagh", "label": "Karol Bagh", "zone_type": "commercial", "x": 0.0, "y": 3.0, "base_aqi": 176, "traffic_sensitivity": 0.85},
+    {"node_id": "connaught_place", "label": "Connaught Place", "zone_type": "transit_hub", "x": 1.0, "y": 3.0, "base_aqi": 182, "traffic_sensitivity": 0.95},
+    {"node_id": "india_gate", "label": "India Gate", "zone_type": "park", "x": 2.0, "y": 3.0, "base_aqi": 138, "traffic_sensitivity": 0.4},
+    {"node_id": "pragati_maidan", "label": "Pragati Maidan", "zone_type": "commercial", "x": 3.0, "y": 3.0, "base_aqi": 170, "traffic_sensitivity": 0.8},
+    {"node_id": "aiims", "label": "AIIMS", "zone_type": "transit_hub", "x": 1.0, "y": 2.0, "base_aqi": 158, "traffic_sensitivity": 0.8},
+    {"node_id": "lajpat_nagar", "label": "Lajpat Nagar", "zone_type": "commercial", "x": 2.0, "y": 2.0, "base_aqi": 168, "traffic_sensitivity": 0.88},
+    {"node_id": "ashram", "label": "Ashram", "zone_type": "arterial", "x": 3.0, "y": 2.0, "base_aqi": 188, "traffic_sensitivity": 0.92},
+    {"node_id": "green_park", "label": "Green Park", "zone_type": "park_edge", "x": 1.0, "y": 1.0, "base_aqi": 146, "traffic_sensitivity": 0.52},
+    {"node_id": "nehru_place", "label": "Nehru Place", "zone_type": "commercial", "x": 2.0, "y": 1.0, "base_aqi": 176, "traffic_sensitivity": 0.9},
+    {"node_id": "okhla_phase_2", "label": "Okhla Phase II", "zone_type": "industrial", "x": 3.0, "y": 1.0, "base_aqi": 212, "traffic_sensitivity": 0.97},
+    {"node_id": "hauz_khas", "label": "Hauz Khas", "zone_type": "mixed_use", "x": 1.0, "y": 0.0, "base_aqi": 150, "traffic_sensitivity": 0.6},
+    {"node_id": "saket", "label": "Saket", "zone_type": "residential", "x": 0.0, "y": 0.0, "base_aqi": 142, "traffic_sensitivity": 0.45}
+  ],
+  "edges": [
+    {"source_node_id": "north_campus", "target_node_id": "civil_lines", "road_type": "local", "distance_km": 2.0, "allowed_modes": ["walk", "bus"]},
+    {"source_node_id": "north_campus", "target_node_id": "karol_bagh", "road_type": "local", "distance_km": 2.4, "allowed_modes": ["walk", "bus"]},
+    {"source_node_id": "civil_lines", "target_node_id": "connaught_place", "road_type": "arterial", "distance_km": 2.1, "allowed_modes": ["walk", "bus", "metro"]},
+    {"source_node_id": "karol_bagh", "target_node_id": "connaught_place", "road_type": "arterial", "distance_km": 2.5, "allowed_modes": ["walk", "bus", "metro"]},
+    {"source_node_id": "connaught_place", "target_node_id": "india_gate", "road_type": "arterial", "distance_km": 2.3, "allowed_modes": ["walk", "bus"]},
+    {"source_node_id": "connaught_place", "target_node_id": "pragati_maidan", "road_type": "arterial", "distance_km": 2.0, "allowed_modes": ["walk", "bus", "metro"]},
+    {"source_node_id": "connaught_place", "target_node_id": "aiims", "road_type": "metro_corridor", "distance_km": 4.0, "allowed_modes": ["walk", "bus", "metro"]},
+    {"source_node_id": "india_gate", "target_node_id": "lajpat_nagar", "road_type": "arterial", "distance_km": 3.2, "allowed_modes": ["walk", "bus"]},
+    {"source_node_id": "pragati_maidan", "target_node_id": "ashram", "road_type": "arterial", "distance_km": 2.2, "allowed_modes": ["walk", "bus", "metro"]},
+    {"source_node_id": "aiims", "target_node_id": "lajpat_nagar", "road_type": "local", "distance_km": 1.6, "allowed_modes": ["walk", "bus", "metro"]},
+    {"source_node_id": "aiims", "target_node_id": "green_park", "road_type": "local", "distance_km": 1.3, "allowed_modes": ["walk", "bus", "metro"]},
+    {"source_node_id": "aiims", "target_node_id": "nehru_place", "road_type": "arterial", "distance_km": 2.7, "allowed_modes": ["walk", "bus", "metro"]},
+    {"source_node_id": "lajpat_nagar", "target_node_id": "nehru_place", "road_type": "arterial", "distance_km": 2.1, "allowed_modes": ["walk", "bus"]},
+    {"source_node_id": "lajpat_nagar", "target_node_id": "ashram", "road_type": "arterial", "distance_km": 1.9, "allowed_modes": ["walk", "bus"]},
+    {"source_node_id": "green_park", "target_node_id": "hauz_khas", "road_type": "local", "distance_km": 1.7, "allowed_modes": ["walk", "bus", "metro"]},
+    {"source_node_id": "green_park", "target_node_id": "saket", "road_type": "local", "distance_km": 2.8, "allowed_modes": ["walk", "bus"]},
+    {"source_node_id": "nehru_place", "target_node_id": "okhla_phase_2", "road_type": "industrial_connector", "distance_km": 1.8, "allowed_modes": ["walk", "bus", "metro"]},
+    {"source_node_id": "ashram", "target_node_id": "okhla_phase_2", "road_type": "ring_road", "distance_km": 2.3, "allowed_modes": ["walk", "bus"]},
+    {"source_node_id": "hauz_khas", "target_node_id": "saket", "road_type": "local", "distance_km": 1.9, "allowed_modes": ["walk", "bus", "metro"]}
+  ]
+}
+
