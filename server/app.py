@@ -352,8 +352,8 @@ def grader_overview(task_id: str | None = None) -> dict:
     requested_tasks = [task_id] if task_id else list(TASK_ORDER)
     references = {task: get_baseline_summary(task).model_dump() for task in requested_tasks}
     return {
-        "score_range": [0.0, 1.0],
-        "formula": "score = clamp((baseline_cost - agent_cost) / (baseline_cost - oracle_cost), 0, 1); agent_cost includes exposure, time, wait penalties, failure penalty, and remaining-distance penalty.",
+        "score_range": [0.001, 0.999],
+        "formula": "score = clamp((baseline_cost - agent_cost) / (baseline_cost - oracle_cost), 0.001, 0.999); agent_cost includes exposure, time, wait penalties, failure penalty, and remaining-distance penalty.",
         "references": references,
     }
 
