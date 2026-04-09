@@ -1,6 +1,72 @@
 spec_version: 1
 name: pollution-exposure-minimizer-environment
+version: "1.0.0"
+author: Swasti
+description: >
+  An OpenEnv benchmark for urban commuting under pollution risk.
+  The agent plans a route across a Delhi-inspired transport graph while
+  balancing exposure, travel time, allowed modes, and dynamic AQI.
 type: space
 runtime: fastapi
 app: server.app:app
 port: 7680
+base_path: /demo
+
+observation_space:
+  type: structured
+  description: >
+    Current node, destination, current hour, cumulative exposure, travel time,
+    remaining steps, legal actions, and graph metadata.
+
+action_space:
+  type: discrete
+  actions:
+    - move
+    - wait
+  description: >
+    Move along a legal edge or wait when the task allows it.
+
+endpoints:
+  health: /health
+  reset: /reset
+  step: /step
+  state: /state
+  tasks: /tasks
+  baseline: /baseline
+  grader: /grader
+
+tasks:
+  - id: easy_static_route
+    description: >
+      Walk from North Campus to Nehru Place while minimizing pollution exposure on a static AQI map.
+    steps: 8
+    grader: true
+    ideal_action: walk-only route to Nehru Place
+  - id: medium_multimodal_route
+    description: >
+      Commute from Karol Bagh to Saket using walk, bus, and metro while balancing pollution and travel time.
+    steps: 9
+    grader: true
+    ideal_action: multimodal southbound commute
+  - id: hard_dynamic_peak_route
+    description: >
+      Travel from Civil Lines to Okhla during peak conditions with dynamic AQI and optional waiting.
+    steps: 9
+    grader: true
+    ideal_action: dynamic peak-hour route with waiting tradeoffs
+  - id: bonus_dynamic_cross_city_route
+    description: >
+      Travel from Karol Bagh to Okhla Phase II during peak conditions with dynamic AQI and multimodal choices.
+    steps: 10
+    grader: true
+    ideal_action: longer cross-city multimodal route
+
+scoring:
+  reward_range: [0.01, 0.99]
+  success_threshold: 0.5
+  score_formula: normalized_grader_score
+
+constraints:
+  max_runtime_seconds: 1200
+  max_memory_gb: 8
+  max_vcpu: 2
