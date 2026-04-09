@@ -16,7 +16,7 @@ tags:
 
 # Pollution Exposure Minimizer Environment
 
-`pollution-exposure-minimizer-environment` is an OpenEnv benchmark for urban commuting under air-quality constraints. The environment uses a deterministic Delhi-inspired transport graph with pollution exposure on each segment, time-dependent traffic effects, and three tasks that get progressively harder from static walking to dynamic multimodal routing.
+`pollution-exposure-minimizer-environment` is an OpenEnv benchmark for urban commuting under air-quality constraints. The environment uses a deterministic Delhi-inspired transport graph with pollution exposure on each segment, time-dependent traffic effects, and four tasks that get progressively harder from static walking to dynamic multimodal routing.
 
 This is meant to model a real decision problem: choosing how to commute through a polluted city while trading off exposure, travel time, and route structure.
 
@@ -99,6 +99,14 @@ Task definitions live in [server/tasks.py](./server/tasks.py).
 - AQI: dynamic
 - What makes it hard: peak-hour pollution, diffusion, and the risk of spending steps on low-value waits
 
+### `bonus_dynamic_cross_city_route`
+
+- Goal: travel from Karol Bagh to Okhla Phase II during peak conditions
+- Modes: `walk`, `bus`, `metro`
+- Wait: allowed
+- AQI: dynamic
+- What makes it hard: a longer cross-city commute with the same peak-hour tradeoffs and more room for route mistakes
+
 ## Reward design
 
 Rewards are dense and shaped over the full trajectory.
@@ -107,7 +115,7 @@ Rewards are dense and shaped over the full trajectory.
 - moving closer to the destination adds a small progress bonus
 - reaching the destination gives an arrival bonus
 - illegal or malformed moves are penalized
-- waiting is legal only on the hard task
+- waiting is legal only on the hard tasks
 
 Final grading is deterministic and normalized to `[0.0, 1.0]`.
 
@@ -145,6 +153,7 @@ Current reference costs:
 - `easy_static_route`: baseline `4183.68`, oracle `2008.50`
 - `medium_multimodal_route`: baseline `3618.00`, oracle `893.13`
 - `hard_dynamic_peak_route`: baseline `6086.32`, oracle `1755.62`
+- `bonus_dynamic_cross_city_route`: baseline `5518.72`, oracle `1819.94`
 
 These values can be re-generated with:
 
@@ -200,7 +209,7 @@ API_BASE_URL=https://router.huggingface.co/v1
 MODEL_NAME=openai/gpt-oss-120b:fastest
 ENV_BASE_URL=http://localhost:7680
 LOCAL_IMAGE_NAME=
-TASK_LIST=easy_static_route,medium_multimodal_route,hard_dynamic_peak_route
+TASK_LIST=easy_static_route,medium_multimodal_route,hard_dynamic_peak_route,bonus_dynamic_cross_city_route
 MAX_STEPS=12
 ```
 
@@ -213,7 +222,7 @@ API_BASE_URL=https://api.openai.com/v1
 MODEL_NAME=gpt-4o-mini
 ENV_BASE_URL=http://localhost:7680
 LOCAL_IMAGE_NAME=
-TASK_LIST=easy_static_route,medium_multimodal_route,hard_dynamic_peak_route
+TASK_LIST=easy_static_route,medium_multimodal_route,hard_dynamic_peak_route,bonus_dynamic_cross_city_route
 MAX_STEPS=12
 ```
 
@@ -254,6 +263,7 @@ Each reset without a task_id rotates through:
 - easy_static_route
 - medium_multimodal_route
 - hard_dynamic_peak_route
+- bonus_dynamic_cross_city_route
   To open a specific task directly, reset with:
 
   ```json
@@ -270,6 +280,12 @@ Each reset without a task_id rotates through:
 
   ```json
   { "task_id": "hard_dynamic_peak_route" }
+  ```
+
+  or
+
+  ```json
+  { "task_id": "bonus_dynamic_cross_city_route" }
   ```
 
   ### Take a step

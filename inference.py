@@ -36,7 +36,7 @@ TASK_LIST = [
     task.strip()
     for task in os.getenv(
         "TASK_LIST",
-        "easy_static_route,medium_multimodal_route,hard_dynamic_peak_route",
+        "easy_static_route,medium_multimodal_route,hard_dynamic_peak_route,bonus_dynamic_cross_city_route",
     ).split(",")
     if task.strip()
 ]
@@ -45,6 +45,7 @@ if not TASK_LIST:
         "easy_static_route",
         "medium_multimodal_route",
         "hard_dynamic_peak_route",
+        "bonus_dynamic_cross_city_route",
     ]
 try:
     MAX_STEPS_OVERRIDE = int(os.getenv("MAX_STEPS", "12"))

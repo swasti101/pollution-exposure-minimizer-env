@@ -86,6 +86,25 @@ TASKS: dict[str, TaskConfig] = {
         distance_penalty=420.0,
         wait_penalty=36.0,
     ),
+    "bonus_dynamic_cross_city_route": TaskConfig(
+        task_id="bonus_dynamic_cross_city_route",
+        name="Bonus Dynamic Cross-City Route",
+        difficulty="hard",
+        description="Travel from Karol Bagh to Okhla Phase II during peak conditions with dynamic AQI, multimodal choices, and optional waiting.",
+        start_node_id="karol_bagh",
+        destination_node_id="okhla_phase_2",
+        allowed_modes=("walk", "bus", "metro"),
+        allow_wait=True,
+        dynamic_aqi=True,
+        start_hour=8,
+        max_steps=10,
+        exposure_weight=1.0,
+        time_weight=0.38,
+        arrival_bonus=12.0,
+        failure_penalty=1750.0,
+        distance_penalty=405.0,
+        wait_penalty=34.0,
+    ),
 }
 
 
