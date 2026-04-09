@@ -53,6 +53,8 @@ except ValueError:
 TEMPERATURE = 0.0
 MAX_TOKENS = 32
 BENCHMARK = "pollution-exposure-minimizer-environment"
+SCORE_FLOOR = 0.001
+SCORE_CEIL = 0.999
 
 SYSTEM_PROMPT = textwrap.dedent(
     """
@@ -114,6 +116,10 @@ def log_end(success: bool, steps: int, score: float, rewards: List[float]) -> No
 
 def sanitize_for_log(text: str) -> str:
     return text.replace("\n", " ").replace("\r", " ").strip()
+
+
+def clamp_strict_unit_interval(value: float) -> float:
+    return max(SCORE_FLOOR, min(SCORE_CEIL, float(value)))
 
 
 def serialize_action(action: PollutionAction) -> str:
@@ -464,7 +470,7 @@ def run_task(client: OpenAI, env: PollutionExposureMinimizerEnv, task_id: str) -
 
         state = env.state()
         score = state.episode_score if state.episode_score is not None else 0.0
-        score = max(0.0, min(1.0, float(score)))
+        score = clamp_strict_unit_interval(score)
         reached_destination = state.current_node_id == state.destination_node_id or (
             result.observation.current_node_id == result.observation.destination_node_id
         )
@@ -478,7 +484,7 @@ def run_task(client: OpenAI, env: PollutionExposureMinimizerEnv, task_id: str) -
             final_score = final_state.episode_score if final_state.episode_score is not None else 0.0
         except Exception:
             final_score = score
-        final_score = max(0.0, min(1.0, float(final_score)))
+        final_score = clamp_strict_unit_interval(final_score)
         log_end(
             success=success,
             steps=steps_taken,
