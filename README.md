@@ -5,7 +5,7 @@ colorFrom: gray
 colorTo: green
 sdk: docker
 pinned: false
-app_port: 7860
+app_port: 7680
 base_path: /demo
 tags:
   - openenv
@@ -198,7 +198,7 @@ HF_TOKEN=your_hf_token_here
 OPENAI_API_KEY=
 API_BASE_URL=https://router.huggingface.co/v1
 MODEL_NAME=openai/gpt-oss-120b:fastest
-ENV_BASE_URL=http://localhost:8000
+ENV_BASE_URL=http://localhost:7680
 LOCAL_IMAGE_NAME=
 TASK_LIST=easy_static_route,medium_multimodal_route,hard_dynamic_peak_route
 MAX_STEPS=12
@@ -211,7 +211,7 @@ HF_TOKEN=
 OPENAI_API_KEY=your_openai_api_key_here
 API_BASE_URL=https://api.openai.com/v1
 MODEL_NAME=gpt-4o-mini
-ENV_BASE_URL=http://localhost:8000
+ENV_BASE_URL=http://localhost:7680
 LOCAL_IMAGE_NAME=
 TASK_LIST=easy_static_route,medium_multimodal_route,hard_dynamic_peak_route
 MAX_STEPS=12
@@ -316,17 +316,17 @@ Each reset without a task_id rotates through:
 Start the API:
 
 ```powershell
-.\.venv\Scripts\python.exe -m uvicorn server.app:app --host 0.0.0.0 --port 8000 --reload
+.\.venv\Scripts\python.exe -m uvicorn server.app:app --host 0.0.0.0 --port 7680 --reload
 ```
 
-Local development uses port `8000`.
+Local development uses port `7680`.
 
 Inspect helper routes:
 
 ```powershell
-Invoke-RestMethod http://localhost:8000/tasks | ConvertTo-Json -Depth 6
-Invoke-RestMethod http://localhost:8000/baseline | ConvertTo-Json -Depth 6
-Invoke-RestMethod http://localhost:8000/grader | ConvertTo-Json -Depth 6
+Invoke-RestMethod http://localhost:7680/tasks | ConvertTo-Json -Depth 6
+Invoke-RestMethod http://localhost:7680/baseline | ConvertTo-Json -Depth 6
+Invoke-RestMethod http://localhost:7680/grader | ConvertTo-Json -Depth 6
 ```
 
 Run inference:
@@ -337,7 +337,7 @@ Run inference:
 
 ## Docker
 
-The Docker image listens on port `7860`.
+The Docker image listens on port `7680`.
 
 Build:
 
@@ -348,7 +348,7 @@ docker build -t pollution-exposure-minimizer-environment -f Dockerfile .
 Run:
 
 ```powershell
-docker run -p 7860:7860 pollution-exposure-minimizer-environment
+docker run -p 7680:7680 pollution-exposure-minimizer-environment
 ```
 
 ## OpenEnv validation

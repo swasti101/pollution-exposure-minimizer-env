@@ -3,6 +3,7 @@
 Optional environment variables:
     API_BASE_URL
     API_KEY
+    HF_TOKEN                 Fallback auth token if API_KEY is unavailable
     MODEL_NAME
     ENV_BASE_URL            Use an already-running environment server
     LOCAL_IMAGE_NAME        Local Docker image name for from_docker_image()
@@ -492,7 +493,7 @@ async def main() -> None:
     try:
         try:
             base_url = os.environ["API_BASE_URL"].strip()
-            api_key = os.environ["API_KEY"]
+            api_key = os.environ.get("API_KEY") or os.environ.get("HF_TOKEN", "")
         except KeyError:
             log_start(task="startup", env=BENCHMARK, model=MODEL_NAME)
             emit_final_end = True
