@@ -53,6 +53,7 @@ class TaskSummary(BaseModel):
     dynamic_aqi: bool
     start_hour: int = Field(..., ge=0, le=23)
     max_steps: int = Field(..., ge=1)
+    grader: bool = True
 
 
 class BaselineSummary(BaseModel):

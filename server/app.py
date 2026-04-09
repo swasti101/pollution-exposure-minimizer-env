@@ -358,6 +358,21 @@ def grader_overview(task_id: str | None = None) -> dict:
     }
 
 
+@app.get("/validate")
+def validate_overview() -> dict:
+    tasks = list_task_summaries()
+    references = {task.task_id: get_baseline_summary(task.task_id).model_dump() for task in tasks}
+    score_range = [0.001, 0.999]
+    return {
+        "task_count": len(tasks),
+        "tasks_with_graders": sum(1 for task in tasks if task.grader),
+        "all_tasks_have_graders": all(task.grader for task in tasks),
+        "score_range": score_range,
+        "task_ids": [task.task_id for task in tasks],
+        "references": references,
+    }
+
+
 @app.post("/grader", response_model=GradeResponse)
 def grader(request: GradeRequest = Body(...)) -> GradeResponse:
     baseline = get_baseline_summary(request.task_id)
