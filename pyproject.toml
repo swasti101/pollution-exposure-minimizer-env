@@ -28,5 +28,6 @@ include-package-data = true
 packages = [
     "pollution_exposure_minimizer_environment",
     "pollution_exposure_minimizer_environment.server",
+    "tasks",
 ]
 package-dir = {"pollution_exposure_minimizer_environment" = ".", "pollution_exposure_minimizer_environment.server" = "server"}
