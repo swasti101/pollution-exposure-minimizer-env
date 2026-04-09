@@ -41,7 +41,6 @@ def normalize_score(agent_cost: float, baseline_cost: float, oracle_cost: float)
     raw = (baseline_cost - agent_cost) / denom
     return round(max(0.001, min(0.999, raw)), 4)
 
-
 def grade_request(
     request: GradeRequest,
     baseline_cost: float,
