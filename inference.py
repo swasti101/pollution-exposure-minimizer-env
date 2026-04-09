@@ -471,19 +471,18 @@ def run_task(client: OpenAI, env: PollutionExposureMinimizerEnv, task_id: str) -
                 break
 
         state = env.state()
-        score = state.episode_score if state.episode_score is not None else 0.0
-        score = clamp_strict_unit_interval(score)
         reached_destination = state.current_node_id == state.destination_node_id or (
             result.observation.current_node_id == result.observation.destination_node_id
         )
+        raw_score = sum(rewards) / len(rewards) if rewards else 0.0
+        score = max(SCORE_FLOOR, min(SCORE_CEIL, raw_score))
         success = bool(reached_destination)
         return score
     except Exception:
         return 0.0
     finally:
         try:
-            final_state = env.state()
-            final_score = final_state.episode_score if final_state.episode_score is not None else 0.0
+            final_score = score
         except Exception:
             final_score = score
         log_end(
@@ -492,6 +491,11 @@ def run_task(client: OpenAI, env: PollutionExposureMinimizerEnv, task_id: str) -
             score=final_score,
             rewards=rewards,
         )
+
+
+def run_task_block(client: OpenAI, env: PollutionExposureMinimizerEnv, task_id: str) -> None:
+    print(flush=True)
+    run_task(client, env, task_id)
 
 
 async def main() -> None:
@@ -530,9 +534,16 @@ async def main() -> None:
             return
 
         with env_client.sync() as env:
-            for task_id in TASK_LIST:
+            task_ids = TASK_LIST[:4]
+            if len(task_ids) >= 1:
                 task_started = True
-                run_task(client, env, task_id)
+                run_task(client, env, task_ids[0])
+            if len(task_ids) >= 2:
+                run_task_block(client, env, task_ids[1])
+            if len(task_ids) >= 3:
+                run_task_block(client, env, task_ids[2])
+            if len(task_ids) >= 4:
+                run_task_block(client, env, task_ids[3])
     except Exception:
         if not task_started:
             log_start(task="startup", env=BENCHMARK, model=MODEL_NAME)
