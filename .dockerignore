@@ -9,6 +9,9 @@ __pycache__
 .ruff_cache
 .tmp
 tmp
+_tmp/
+_wheel_test/
+_scaffold_test/
 build
 dist
 *.pyc

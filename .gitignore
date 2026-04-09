@@ -4,6 +4,10 @@
 .pip-cache/
 .python-version
 .ruff_cache/
+.tmp/
+_tmp/
+_wheel_test/
+_scaffold_test/
 .ipynb_checkpoints/
 .vscode/
 .idea/
