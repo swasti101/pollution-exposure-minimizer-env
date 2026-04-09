@@ -54,8 +54,8 @@ except ValueError:
 TEMPERATURE = 0.0
 MAX_TOKENS = 32
 BENCHMARK = "pollution-exposure-minimizer-environment"
-SCORE_FLOOR = 0.001
-SCORE_CEIL = 0.999
+SCORE_FLOOR = 0.01
+SCORE_CEIL = 0.99
 
 SYSTEM_PROMPT = textwrap.dedent(
     """
@@ -108,9 +108,10 @@ def log_step(step: int, action: str, reward: float, done: bool, error: Optional[
 
 
 def log_end(success: bool, steps: int, score: float, rewards: List[float]) -> None:
+    bounded_score = max(SCORE_FLOOR, min(SCORE_CEIL, float(score)))
     rewards_str = ",".join(f"{reward:.2f}" for reward in rewards)
     print(
-        f"[END] success={str(success).lower()} steps={steps} score={score:.3f} rewards={rewards_str}",
+        f"[END] success={str(success).lower()} steps={steps} score={bounded_score:.2f} rewards={rewards_str}",
         flush=True,
     )
 
@@ -485,7 +486,6 @@ def run_task(client: OpenAI, env: PollutionExposureMinimizerEnv, task_id: str) -
             final_score = final_state.episode_score if final_state.episode_score is not None else 0.0
         except Exception:
             final_score = score
-        final_score = clamp_strict_unit_interval(final_score)
         log_end(
             success=success,
             steps=steps_taken,

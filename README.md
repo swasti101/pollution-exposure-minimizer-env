@@ -117,7 +117,7 @@ Rewards are dense and shaped over the full trajectory.
 - illegal or malformed moves are penalized
 - waiting is legal only on the hard tasks
 
-Final grading is deterministic and normalized to `[0.0, 1.0]`.
+Final grading is deterministic and normalized to `[0.01, 0.99]`.
 
 ## Grader
 
@@ -132,7 +132,7 @@ The grader in [server/grader.py](./server/grader.py) computes:
 Final score:
 
 ```text
-score = clamp((baseline_cost - agent_cost) / (baseline_cost - oracle_cost), 0, 1)
+score = clamp((baseline_cost - agent_cost) / (baseline_cost - oracle_cost), 0.01, 0.99)
 ```
 
 This means:

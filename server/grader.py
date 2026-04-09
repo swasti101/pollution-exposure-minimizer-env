@@ -36,10 +36,10 @@ def weighted_cost(
 
 def normalize_score(agent_cost: float, baseline_cost: float, oracle_cost: float) -> float:
     if agent_cost <= oracle_cost:
-        return 0.999
+        return 0.99
     denom = max(baseline_cost - oracle_cost, 1e-6)
     raw = (baseline_cost - agent_cost) / denom
-    return round(max(0.001, min(0.999, raw)), 4)
+    return round(max(0.01, min(0.99, raw)), 2)
 
 def grade_request(
     request: GradeRequest,
