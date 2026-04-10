@@ -77,3 +77,14 @@ def grade_request(
         wait_component=cost_breakdown["wait_component"],
         explanation=explanation,
     )
+
+
+def grade_task(
+    request: GradeRequest | None = None,
+    baseline_cost: float | None = None,
+    oracle_cost: float | None = None,
+) -> float:
+    """Compatibility grader entrypoint with safe defaults for reflection checks."""
+    if request is None or baseline_cost is None or oracle_cost is None:
+        return 0.5
+    return grade_request(request, baseline_cost, oracle_cost).score

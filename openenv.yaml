@@ -37,29 +37,53 @@ endpoints:
 
 tasks:
   - id: easy_static_route
+    name: Easy Static AQI Route
+    difficulty: easy
     description: >
       Walk from North Campus to Nehru Place while minimizing pollution exposure on a static AQI map.
-    steps: 8
-    grader: true
+    max_steps: 8
+    grader:
+      module: tasks.grader
+      function: grade_task
     ideal_action: walk-only route to Nehru Place
   - id: medium_multimodal_route
+    name: Medium Multimodal Southbound Commute
+    difficulty: medium
     description: >
       Commute from Karol Bagh to Saket using walk, bus, and metro while balancing pollution and travel time.
-    steps: 9
-    grader: true
+    max_steps: 9
+    grader:
+      module: tasks.grader
+      function: grade_task
     ideal_action: multimodal southbound commute
   - id: hard_dynamic_peak_route
+    name: Hard Dynamic Peak Routing
+    difficulty: hard
     description: >
       Travel from Civil Lines to Okhla during peak conditions with dynamic AQI and optional waiting.
-    steps: 9
-    grader: true
+    max_steps: 9
+    grader:
+      module: tasks.grader
+      function: grade_task
     ideal_action: dynamic peak-hour route with waiting tradeoffs
   - id: bonus_dynamic_cross_city_route
+    name: Bonus Dynamic Cross-City Route
+    difficulty: hard
     description: >
       Travel from Karol Bagh to Okhla Phase II during peak conditions with dynamic AQI and multimodal choices.
-    steps: 10
-    grader: true
+    max_steps: 10
+    grader:
+      module: tasks.grader
+      function: grade_task
     ideal_action: longer cross-city multimodal route
+
+grader:
+  module: tasks.grader
+  function: grade_task
+
+agent:
+  baseline: inference.py
+  type: llm-agent
 
 scoring:
   reward_range: [0.01, 0.99]
