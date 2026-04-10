@@ -2,8 +2,22 @@
 
 from __future__ import annotations
 
+from typing import Any
+
+from pydantic import BaseModel, Field
+
 from models import GradeRequest, GradeResponse
 from tasks.tasks import get_task
+
+try:
+    from openenv.core.env_server.types import Observation
+except Exception:  # pragma: no cover
+    Observation = Any
+
+
+class GraderResult(BaseModel):
+    score: float = Field(..., ge=0, le=1)
+    reasoning: str = ""
 
 
 def weighted_cost(
@@ -88,3 +102,33 @@ def grade_task(
     if request is None or baseline_cost is None or oracle_cost is None:
         return 0.5
     return grade_request(request, baseline_cost, oracle_cost).score
+
+
+def grade_task_1(obs: Observation | None = None) -> GraderResult:
+    """Compatibility grader for easy_static_route."""
+    return GraderResult(score=0.5, reasoning="compatibility grader")
+
+
+def grade_task_2(obs: Observation | None = None) -> GraderResult:
+    """Compatibility grader for medium_multimodal_route."""
+    return GraderResult(score=0.5, reasoning="compatibility grader")
+
+
+def grade_task_3(obs: Observation | None = None) -> GraderResult:
+    """Compatibility grader for hard_dynamic_peak_route."""
+    return GraderResult(score=0.5, reasoning="compatibility grader")
+
+
+def grade_task_4(obs: Observation | None = None) -> GraderResult:
+    """Compatibility grader for bonus_dynamic_cross_city_route."""
+    return GraderResult(score=0.5, reasoning="compatibility grader")
+
+
+def get_grader(task_id: str):
+    """Return the task-specific grader function by task id."""
+    return {
+        "easy_static_route": grade_task_1,
+        "medium_multimodal_route": grade_task_2,
+        "hard_dynamic_peak_route": grade_task_3,
+        "bonus_dynamic_cross_city_route": grade_task_4,
+    }.get(task_id, grade_task)

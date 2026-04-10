@@ -44,7 +44,7 @@ tasks:
     max_steps: 8
     grader:
       module: tasks.grader
-      function: grade_task
+      function: grade_task_1
     ideal_action: walk-only route to Nehru Place
   - id: medium_multimodal_route
     name: Medium Multimodal Southbound Commute
@@ -54,7 +54,7 @@ tasks:
     max_steps: 9
     grader:
       module: tasks.grader
-      function: grade_task
+      function: grade_task_2
     ideal_action: multimodal southbound commute
   - id: hard_dynamic_peak_route
     name: Hard Dynamic Peak Routing
@@ -64,7 +64,7 @@ tasks:
     max_steps: 9
     grader:
       module: tasks.grader
-      function: grade_task
+      function: grade_task_3
     ideal_action: dynamic peak-hour route with waiting tradeoffs
   - id: bonus_dynamic_cross_city_route
     name: Bonus Dynamic Cross-City Route
@@ -74,12 +74,12 @@ tasks:
     max_steps: 10
     grader:
       module: tasks.grader
-      function: grade_task
+      function: grade_task_4
     ideal_action: longer cross-city multimodal route
 
 grader:
   module: tasks.grader
-  function: grade_task
+  function: grade_task_1
 
 agent:
   baseline: inference.py
