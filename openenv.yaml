@@ -43,7 +43,7 @@ tasks:
       Walk from North Campus to Nehru Place while minimizing pollution exposure on a static AQI map.
     max_steps: 8
     grader:
-      module: tasks.grader
+      module: server.grader
       function: grade_task_1
     ideal_action: walk-only route to Nehru Place
   - id: medium_multimodal_route
@@ -53,7 +53,7 @@ tasks:
       Commute from Karol Bagh to Saket using walk, bus, and metro while balancing pollution and travel time.
     max_steps: 9
     grader:
-      module: tasks.grader
+      module: server.grader
       function: grade_task_2
     ideal_action: multimodal southbound commute
   - id: hard_dynamic_peak_route
@@ -63,22 +63,12 @@ tasks:
       Travel from Civil Lines to Okhla during peak conditions with dynamic AQI and optional waiting.
     max_steps: 9
     grader:
-      module: tasks.grader
+      module: server.grader
       function: grade_task_3
     ideal_action: dynamic peak-hour route with waiting tradeoffs
-  - id: bonus_dynamic_cross_city_route
-    name: Bonus Dynamic Cross-City Route
-    difficulty: hard
-    description: >
-      Travel from Karol Bagh to Okhla Phase II during peak conditions with dynamic AQI and multimodal choices.
-    max_steps: 10
-    grader:
-      module: tasks.grader
-      function: grade_task_4
-    ideal_action: longer cross-city multimodal route
 
 grader:
-  module: tasks.grader
+  module: server.grader
   function: grade_task_1
 
 agent:

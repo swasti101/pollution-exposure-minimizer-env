@@ -36,7 +36,7 @@ TASK_LIST = [
     task.strip()
     for task in os.getenv(
         "TASK_LIST",
-        "easy_static_route,medium_multimodal_route,hard_dynamic_peak_route,bonus_dynamic_cross_city_route",
+        "easy_static_route,medium_multimodal_route,hard_dynamic_peak_route",
     ).split(",")
     if task.strip()
 ]
@@ -45,7 +45,6 @@ if not TASK_LIST:
         "easy_static_route",
         "medium_multimodal_route",
         "hard_dynamic_peak_route",
-        "bonus_dynamic_cross_city_route",
     ]
 try:
     MAX_STEPS_OVERRIDE = int(os.getenv("MAX_STEPS", "12"))
@@ -534,7 +533,7 @@ async def main() -> None:
             return
 
         with env_client.sync() as env:
-            task_ids = TASK_LIST[:4]
+            task_ids = TASK_LIST[:3]
             if len(task_ids) >= 1:
                 task_started = True
                 run_task(client, env, task_ids[0])
@@ -542,8 +541,6 @@ async def main() -> None:
                 run_task_block(client, env, task_ids[1])
             if len(task_ids) >= 3:
                 run_task_block(client, env, task_ids[2])
-            if len(task_ids) >= 4:
-                run_task_block(client, env, task_ids[3])
     except Exception:
         if not task_started:
             log_start(task="startup", env=BENCHMARK, model=MODEL_NAME)
